@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NecLib</string>
+
+    <item name="tag_first" type="id" />
+    <item name="tag_second" type="id" />
+
+</resources>
