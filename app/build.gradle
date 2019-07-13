@@ -23,7 +23,7 @@ dependencies {
     //Third-party Libraries
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //Android Components
-    implementation 'com.android.support:appcompat-v7:26.+'
+    implementation 'com.android.support:appcompat-v7:26.1.0'
     //Test
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
