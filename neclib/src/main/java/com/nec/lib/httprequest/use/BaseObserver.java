@@ -3,6 +3,7 @@ package com.nec.lib.httprequest.use;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.JsonParseException;
 import com.nec.lib.httprequest.net.dialog.CustomProgressDialogUtils;
@@ -114,6 +115,7 @@ public abstract class BaseObserver<T extends BaseResponseEntity> implements Obse
 
     @Override
     public void onError(Throwable e) {
+        Log.e(this.getClass().getName(), e.getMessage(), e);
         onRequestEnd();
         if (e instanceof retrofit2.HttpException) {
             //HTTP错误

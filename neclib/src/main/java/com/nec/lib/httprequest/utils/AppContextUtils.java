@@ -9,7 +9,7 @@ import android.content.Context;
 public final class AppContextUtils {
 
     @SuppressLint("StaticFieldLeak")
-    private static Context mContext;
+    private static Context mContext = null;
 
     private AppContextUtils() {
         throw new UnsupportedOperationException("You can't instantiate me...");
