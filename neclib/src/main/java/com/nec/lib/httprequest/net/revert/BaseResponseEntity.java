@@ -30,6 +30,6 @@ public class BaseResponseEntity implements Serializable {
     }
 
     public boolean tokenInvalid() {
-        return ApiConfig.getInvalidateToken() == code;
+        return ApiConfig.getInvalidToken() == code;
     }
 }

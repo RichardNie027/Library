@@ -11,23 +11,23 @@ import java.io.Serializable;
  */
 public class ApiConfig implements Serializable {
 
-    private static int mInvalidateToken;
+    private static int mInvalidToken;
     private static String mBaseUrl;
     private static int mDefaultTimeout = 2000;
     private static int mSucceedCode;
     private static String mQuitBroadcastReceiverFilter;
-    private static ArrayMap<String, String> mHeads;
+    private static ArrayMap<String, String> mHeaders;
     private static String mToken = "";
     private static boolean mOpenHttps;
     private static SslSocketConfigure mSslSocketConfigure;
 
     private ApiConfig(Builder builder) {
-        mInvalidateToken = builder.invalidateToken;
+        mInvalidToken = builder.invalidToken;
         mBaseUrl = builder.baseUrl;
         mDefaultTimeout = builder.defaultTimeout;
         mSucceedCode = builder.succeedCode;
         mQuitBroadcastReceiverFilter = builder.broadcastFilter;
-        mHeads = builder.heads;
+        mHeaders = builder.headers;
         mOpenHttps = builder.openHttps;
         mSslSocketConfigure = builder.sslSocketConfigure;
     }
@@ -36,8 +36,8 @@ public class ApiConfig implements Serializable {
         AppContextUtils.init(appContext);
     }
 
-    public static int getInvalidateToken() {
-        return mInvalidateToken;
+    public static int getInvalidToken() {
+        return mInvalidToken;
     }
 
     public static String getBaseUrl() {
@@ -57,11 +57,11 @@ public class ApiConfig implements Serializable {
     }
 
     public static ArrayMap<String, String> getHeads() {
-        return mHeads;
+        return mHeaders;
     }
 
-    public static void setHeads(ArrayMap<String, String> mHeads) {
-        ApiConfig.mHeads = mHeads;
+    public static void setHeaders(ArrayMap<String, String> mHeaders) {
+        ApiConfig.mHeaders = mHeaders;
     }
 
 
@@ -84,7 +84,7 @@ public class ApiConfig implements Serializable {
 
     public static final class Builder  {
 
-        private int invalidateToken;
+        private int invalidToken;
 
         private String baseUrl;
 
@@ -94,14 +94,14 @@ public class ApiConfig implements Serializable {
 
         private String broadcastFilter;
 
-        private ArrayMap<String, String> heads;
+        private ArrayMap<String, String> headers;
 
         private boolean openHttps = false;
 
         private SslSocketConfigure sslSocketConfigure;
 
-        public Builder setHeads(ArrayMap<String, String> heads) {
-            this.heads = heads;
+        public Builder setHeaders(ArrayMap<String, String> headers) {
+            this.headers = headers;
             return this;
         }
 
@@ -121,8 +121,8 @@ public class ApiConfig implements Serializable {
             return this;
         }
 
-        public Builder setInvalidateToken(int invalidateToken) {
-            this.invalidateToken = invalidateToken;
+        public Builder setInvalidToken(int invalidToken) {
+            this.invalidToken = invalidToken;
             return this;
         }
 
