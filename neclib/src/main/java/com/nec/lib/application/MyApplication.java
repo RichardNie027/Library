@@ -39,9 +39,16 @@ public class MyApplication extends Application {
         return instanceRef.get();
     }
 
+    public static Activity getCurrentActivity(){
+        synchronized (MyApplication.class) {
+            return ActivityManager.getInstance().getCurrentActivity();
+        }
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = getApplicationContext();
 
         this.registerActivityLifecycleCallbacks(new ActivityLifecycleCallbacks() {
             @Override

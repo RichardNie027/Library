@@ -88,10 +88,10 @@ public abstract class BaseDisposableObserver<T extends BaseResponseEntity> exten
             //token失效捕捉，发送广播，在项目中接收该动态广播然后做退出登录等一些列操作
             VariableUtils.receive_token_count++;
             if (1 == VariableUtils.receive_token_count) {
-                sendBroadcast();
+                sendBroadcast(response.msg);
             } else if (VariableUtils.receive_token_count > 1) {
                 if (System.currentTimeMillis() - VariableUtils.temp_system_time > 1000) {
-                    sendBroadcast();
+                    sendBroadcast(response.msg);
                 }
             }
             VariableUtils.temp_system_time = System.currentTimeMillis();
@@ -104,10 +104,10 @@ public abstract class BaseDisposableObserver<T extends BaseResponseEntity> exten
         }
     }
 
-    private void sendBroadcast() {
+    private void sendBroadcast(String msg) {
         Intent intent = new Intent();
         intent.setAction(ApiConfig.getQuitBroadcastReceiverFilter());
-        intent.putExtra(TOKEN_INVALID_TAG, QUIT_APP);
+        intent.putExtra(TOKEN_INVALID_TAG, msg==null || msg.isEmpty() ? QUIT_APP : msg);
         AppContextUtils.getContext().sendBroadcast(intent);
     }
 

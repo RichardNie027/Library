@@ -57,6 +57,13 @@ public class CustomLoadingDialog extends Dialog {
     }
   }
 
+  public void setMessage(String message) {
+    TextView tvMessage = mDialogView.findViewById(R.id.tv_loading_msg);
+    if (tvMessage != null) {
+      tvMessage.setText(message);
+    }
+  }
+
   public static final class Builder {
     Context context;
     private int resStyle = -1;

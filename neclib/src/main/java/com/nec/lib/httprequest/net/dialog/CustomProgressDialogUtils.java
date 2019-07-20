@@ -10,8 +10,15 @@ import com.nec.lib.R;
 
 public class CustomProgressDialogUtils {
 
-
   private CustomLoadingDialog mProgressDialog;
+
+  private static class CustomProgressDialogUtilsHolder {
+    private static final CustomProgressDialogUtils INSTANCE = new CustomProgressDialogUtils();
+  }
+
+  public static final CustomProgressDialogUtils getInstance() {
+    return CustomProgressDialogUtilsHolder.INSTANCE;
+  }
 
   /**
    * 显示ProgressDialog
@@ -25,7 +32,8 @@ public class CustomProgressDialogUtils {
     }
     if (!mProgressDialog.isShowing()) {
       mProgressDialog.show();
-    }
+    } else
+      mProgressDialog.setMessage(msg);
   }
 
   /**

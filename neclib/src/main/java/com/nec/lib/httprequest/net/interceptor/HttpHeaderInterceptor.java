@@ -26,7 +26,7 @@ public class HttpHeaderInterceptor implements Interceptor {
 
         Request originalRequest = chain.request();
 
-        Map<String, String> heads = ApiConfig.getHeads();
+        Map<String, String> heads = ApiConfig.getHeaders();
 
         String token = ApiConfig.getToken();
 

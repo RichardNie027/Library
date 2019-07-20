@@ -56,7 +56,7 @@ public class ApiConfig implements Serializable {
         return mQuitBroadcastReceiverFilter;
     }
 
-    public static ArrayMap<String, String> getHeads() {
+    public static ArrayMap<String, String> getHeaders() {
         return mHeaders;
     }
 

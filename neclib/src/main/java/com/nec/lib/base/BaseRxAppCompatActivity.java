@@ -2,9 +2,11 @@ package com.nec.lib.base;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -15,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.nec.lib.application.MyApplication;
 import com.nec.lib.httprequest.use.BaseObserver;
 import com.nec.lib.httprequest.utils.ApiConfig;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -48,6 +51,12 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
         mCompositeDisposable = new CompositeDisposable();
         //初始化广播接收器
         initReceiver();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(mQuitAppReceiver);
+        super.onStop();
     }
 
     @Override
@@ -118,7 +127,18 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
             if (ApiConfig.getQuitBroadcastReceiverFilter().equals(intent.getAction())) {
                 String msg = intent.getStringExtra(BaseObserver.TOKEN_INVALID_TAG);
                 if (!TextUtils.isEmpty(msg)) {
-                    Toast.makeText(BaseRxAppCompatActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    new AlertDialog.Builder(MyApplication.getInstance())
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("严重")
+                            .setMessage(msg + "，应用即将关闭")
+                            .setCancelable(false)
+                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    System.exit(0);
+                                }
+                            })
+                            .show();
                 }
             }
         }
