@@ -33,7 +33,7 @@ public class ApiConfig implements Serializable {
     }
 
     public void init(Context appContext) {
-        AppContextUtils.init(appContext);
+        AppContextUtil.init(appContext);
     }
 
     public static int getInvalidToken() {

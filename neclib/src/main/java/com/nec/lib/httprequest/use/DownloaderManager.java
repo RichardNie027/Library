@@ -3,7 +3,7 @@ package com.nec.lib.httprequest.use;
 import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Message;
-import com.nec.lib.httprequest.utils.DownloadFileUtils;
+import com.nec.lib.httprequest.utils.DownloadFileUtil;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -171,7 +171,7 @@ public class DownloaderManager {
         RandomAccessFile randomAccessFile = null;
 
         try {
-            File file = DownloadFileUtils.getFileFromUrl(url);
+            File file = DownloadFileUtil.getFileFromUrl(url);
             randomAccessFile = new RandomAccessFile(file, "rwd");
             //Chanel NIO中的用法，由于RandomAccessFile没有使用缓存策略，直接使用会使得下载速度变慢，亲测缓存下载3.3秒的文件，用普通的RandomAccessFile需要20多秒。
             channelOut = randomAccessFile.getChannel();

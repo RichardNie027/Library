@@ -8,7 +8,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * 用于RxJava线程切换
  */
-public class RxTransformerUtils {
+public class RxTransformerUtil {
     public static <T> ObservableTransformer<T, T> observableTransformer() {
         return tObservable -> tObservable.subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }

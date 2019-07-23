@@ -1,7 +1,7 @@
 package com.nec.lib.httprequest.net.https;
 
 import com.nec.lib.httprequest.utils.ApiConfig;
-import com.nec.lib.httprequest.utils.AppContextUtils;
+import com.nec.lib.httprequest.utils.AppContextUtil;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -59,8 +59,8 @@ public class SslSocketFactory {
         try {
             KeyStore keyStore = KeyStore.getInstance(ApiConfig.getSslSocketConfigure().getKeystoreType());
             KeyStore trustStore = KeyStore.getInstance(ApiConfig.getSslSocketConfigure().getKeystoreType());
-            InputStream keyInput = AppContextUtils.getContext().getAssets().open(ApiConfig.getSslSocketConfigure().getClientPriKey());
-            InputStream trustInput = AppContextUtils.getContext().getAssets().open(ApiConfig.getSslSocketConfigure().getTrustPubKey());
+            InputStream keyInput = AppContextUtil.getContext().getAssets().open(ApiConfig.getSslSocketConfigure().getClientPriKey());
+            InputStream trustInput = AppContextUtil.getContext().getAssets().open(ApiConfig.getSslSocketConfigure().getTrustPubKey());
             keyStore.load(keyInput, ApiConfig.getSslSocketConfigure().getClientBKSPassword().toCharArray());
             trustStore.load(trustInput, ApiConfig.getSslSocketConfigure().getTruststoreBKSPassword().toCharArray());
 

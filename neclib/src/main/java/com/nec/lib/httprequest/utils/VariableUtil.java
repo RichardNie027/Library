@@ -1,6 +1,6 @@
 package com.nec.lib.httprequest.utils;
 
-public class VariableUtils {
+public class VariableUtil {
 
     /**
      * 收到Token失效的时间记录值

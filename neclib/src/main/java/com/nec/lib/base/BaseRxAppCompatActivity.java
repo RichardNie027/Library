@@ -55,7 +55,15 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
 
     @Override
     protected void onStop() {
-        unregisterReceiver(mQuitAppReceiver);
+        try {
+            getApplicationContext().unregisterReceiver(mQuitAppReceiver);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("Receiver not registered")) {
+                // Ignore this exception.
+            } else {
+                throw e;
+            }
+        }
         super.onStop();
     }
 
@@ -117,7 +125,7 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
         mQuitAppReceiver = new QuitAppReceiver();
         IntentFilter filter = new IntentFilter();
         filter.addAction(ApiConfig.getQuitBroadcastReceiverFilter());
-        registerReceiver(mQuitAppReceiver, filter);
+        getApplicationContext().registerReceiver(mQuitAppReceiver, filter);
     }
 
     private class QuitAppReceiver extends BroadcastReceiver {

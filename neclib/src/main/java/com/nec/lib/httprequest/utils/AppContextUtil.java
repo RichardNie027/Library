@@ -6,12 +6,12 @@ import android.content.Context;
 /**
  * 上下文工具类 {@link ApiConfig init()方法中默认初始化}
  */
-public final class AppContextUtils {
+public final class AppContextUtil {
 
     @SuppressLint("StaticFieldLeak")
     private static Context mContext = null;
 
-    private AppContextUtils() {
+    private AppContextUtil() {
         throw new UnsupportedOperationException("You can't instantiate me...");
     }
 
@@ -21,7 +21,7 @@ public final class AppContextUtils {
      * @param context 上下文
      */
     public static void init(Context context) {
-        AppContextUtils.mContext = context.getApplicationContext();
+        AppContextUtil.mContext = context.getApplicationContext();
     }
 
     /**

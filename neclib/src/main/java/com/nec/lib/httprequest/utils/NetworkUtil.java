@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
  * 网络相关工具类
  */
 
-public class NetworkUtils {
+public class NetworkUtil {
 
-    private NetworkUtils() {
+    private NetworkUtil() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
 

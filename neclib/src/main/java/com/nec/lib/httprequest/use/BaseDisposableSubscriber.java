@@ -8,8 +8,8 @@ import com.google.gson.JsonParseException;
 import com.nec.lib.httprequest.net.dialog.CustomProgressDialogUtils;
 import com.nec.lib.httprequest.net.revert.BaseResponseEntity;
 import com.nec.lib.httprequest.utils.ApiConfig;
-import com.nec.lib.httprequest.utils.AppContextUtils;
-import com.nec.lib.httprequest.utils.VariableUtils;
+import com.nec.lib.httprequest.utils.AppContextUtil;
+import com.nec.lib.httprequest.utils.VariableUtil;
 import io.reactivex.subscribers.ResourceSubscriber;
 import org.json.JSONException;
 
@@ -97,15 +97,15 @@ public abstract class BaseDisposableSubscriber<T extends BaseResponseEntity> ext
             }
         } else if (response.tokenInvalid()) {
             //token失效捕捉，发送广播，在项目中接收该动态广播然后做退出登录等一些列操作
-            VariableUtils.receive_token_count++;
-            if (1 == VariableUtils.receive_token_count) {
+            VariableUtil.receive_token_count++;
+            if (1 == VariableUtil.receive_token_count) {
                 sendBroadcast(response.msg);
-            } else if (VariableUtils.receive_token_count > 1) {
-                if (System.currentTimeMillis() - VariableUtils.temp_system_time > 1000) {
+            } else if (VariableUtil.receive_token_count > 1) {
+                if (System.currentTimeMillis() - VariableUtil.temp_system_time > 1000) {
                     sendBroadcast(response.msg);
                 }
             }
-            VariableUtils.temp_system_time = System.currentTimeMillis();
+            VariableUtil.temp_system_time = System.currentTimeMillis();
         } else {
             try {
                 onFailing(response);
@@ -119,7 +119,7 @@ public abstract class BaseDisposableSubscriber<T extends BaseResponseEntity> ext
         Intent intent = new Intent();
         intent.setAction(ApiConfig.getQuitBroadcastReceiverFilter());
         intent.putExtra(TOKEN_INVALID_TAG, msg==null || msg.isEmpty() ? QUIT_APP : msg);
-        AppContextUtils.getContext().sendBroadcast(intent);
+        AppContextUtil.getContext().sendBroadcast(intent);
     }
 
 
@@ -147,24 +147,24 @@ public abstract class BaseDisposableSubscriber<T extends BaseResponseEntity> ext
     private void onException(ExceptionReason reason) {
         switch (reason) {
             case CONNECT_ERROR:
-                Toast.makeText(AppContextUtils.getContext(), CONNECT_ERROR, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), CONNECT_ERROR, Toast.LENGTH_SHORT).show();
                 break;
 
             case CONNECT_TIMEOUT:
-                Toast.makeText(AppContextUtils.getContext(), CONNECT_TIMEOUT, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), CONNECT_TIMEOUT, Toast.LENGTH_SHORT).show();
                 break;
 
             case BAD_NETWORK:
-                Toast.makeText(AppContextUtils.getContext(), BAD_NETWORK, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), BAD_NETWORK, Toast.LENGTH_SHORT).show();
                 break;
 
             case PARSE_ERROR:
-                Toast.makeText(AppContextUtils.getContext(), PARSE_ERROR, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), PARSE_ERROR, Toast.LENGTH_SHORT).show();
                 break;
 
             case UNKNOWN_ERROR:
             default:
-                Toast.makeText(AppContextUtils.getContext(), UNKNOWN_ERROR, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AppContextUtil.getContext(), UNKNOWN_ERROR, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
@@ -189,9 +189,9 @@ public abstract class BaseDisposableSubscriber<T extends BaseResponseEntity> ext
     public void onFailing(T response) {
         String message = response.getMsg();
         if (TextUtils.isEmpty(message)) {
-            Toast.makeText(AppContextUtils.getContext(), RESPONSE_RETURN_ERROR, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContextUtil.getContext(), RESPONSE_RETURN_ERROR, Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(AppContextUtils.getContext(), message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContextUtil.getContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
 

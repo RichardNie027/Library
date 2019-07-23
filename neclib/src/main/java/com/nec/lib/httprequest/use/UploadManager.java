@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.support.annotation.NonNull;
-import com.nec.lib.httprequest.utils.AppContextUtils;
+
+import com.nec.lib.httprequest.utils.AppContextUtil;
+
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -49,7 +51,7 @@ public class UploadManager {
 
         return Flowable.fromIterable(pathList).concatMap((Function<File, Flowable<MultipartBody.Part>>) f -> {
             Bitmap bitmap = BitmapFactory.decodeFile(f.toString());
-            File file = compressBitmapToFile(bitmap, AppContextUtils.getContext());
+            File file = compressBitmapToFile(bitmap, AppContextUtil.getContext());
             Log.e("-->文件大小：", bytesTrans(file.length()) + ",fileSize=" + file.length() / 1024 + "kb");
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part imageBodyPart = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
@@ -67,7 +69,7 @@ public class UploadManager {
             public Publisher<MultipartBody.Part> apply(File f) throws Exception {
                 Log.e("-->", "===Subscriber: " + Thread.currentThread().getName());
                 Bitmap bitmap = BitmapFactory.decodeFile(f.toString());
-                File file = compressBitmapToFile(bitmap, AppContextUtils.getContext());
+                File file = compressBitmapToFile(bitmap, AppContextUtil.getContext());
                 Log.e("-->文件大小：", bytesTrans(file.length()) + ",fileSize=" + file.length() / 1024 + "kb");
                 RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
                 MultipartBody.Part imageBodyPart = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
@@ -98,7 +100,7 @@ public class UploadManager {
                 /*concatMap((Function<File, Flowable<MultipartBody.Part>>) f -> {
             Log.e("-->", "===Subscriber: " + Thread.currentThread().getName());
             Bitmap bitmap = BitmapFactory.decodeFile(f.toString());
-            File file = compressBitmapToFile(bitmap, AppContextUtils.getContext());
+            File file = compressBitmapToFile(bitmap, AppContextUtil.getContext());
             Log.e("-->文件大小：", bytesTrans(file.length()) + ",fileSize=" + file.length() / 1024 + "kb");
             RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
             MultipartBody.Part imageBodyPart = MultipartBody.Part.createFormData("file", file.getName(), requestBody);

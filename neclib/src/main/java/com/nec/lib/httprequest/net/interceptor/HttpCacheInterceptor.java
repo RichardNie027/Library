@@ -2,8 +2,8 @@ package com.nec.lib.httprequest.net.interceptor;
 
 import android.util.Log;
 
-import com.nec.lib.httprequest.utils.AppContextUtils;
-import com.nec.lib.httprequest.utils.NetworkUtils;
+import com.nec.lib.httprequest.utils.AppContextUtil;
+import com.nec.lib.httprequest.utils.NetworkUtil;
 
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -23,7 +23,7 @@ public class HttpCacheInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         //没网强制从缓存读取
-        if (!NetworkUtils.isConnected(AppContextUtils.getContext())) {
+        if (!NetworkUtil.isConnected(AppContextUtil.getContext())) {
             request = request.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
@@ -32,7 +32,7 @@ public class HttpCacheInterceptor implements Interceptor {
 
         Response originalResponse = chain.proceed(request);
 
-        if (NetworkUtils.isConnected(AppContextUtils.getContext())) {
+        if (NetworkUtil.isConnected(AppContextUtil.getContext())) {
             //有网的时候读接口上的@Headers里的配置
             String cacheControl = request.cacheControl().toString();
             return originalResponse.newBuilder()

@@ -11,7 +11,7 @@ import java.util.Objects;
 /**
  * 文件下载工具类
  */
-public class DownloadFileUtils {
+public class DownloadFileUtil {
 
 
     public static File getFileFromUrl(String url) throws IOException {
@@ -20,7 +20,7 @@ public class DownloadFileUtils {
         String state = Environment.getExternalStorageState();
         //判断SDCard是否挂载上
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            Toast.makeText(AppContextUtils.getContext(), "SD卡不存在", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContextUtil.getContext(), "SD卡不存在", Toast.LENGTH_SHORT).show();
             return null;
         }
         String savePath = isExistDir(saveDirPath);

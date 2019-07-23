@@ -12,7 +12,7 @@ import com.nec.lib.httprequest.net.interceptor.HttpHeaderInterceptor;
 import com.nec.lib.httprequest.net.interceptor.HttpLoggerInterceptor;
 import com.nec.lib.httprequest.net.transform.NullTypeAdapterFactory;
 import com.nec.lib.httprequest.utils.ApiConfig;
-import com.nec.lib.httprequest.utils.AppContextUtils;
+import com.nec.lib.httprequest.utils.AppContextUtil;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -36,7 +36,7 @@ public class RetrofitFactory {
     private RetrofitFactory() {
 
         // 指定缓存路径,缓存大小100Mb
-        File cacheFile = new File(AppContextUtils.getContext().getCacheDir(), "HttpCache");
+        File cacheFile = new File(AppContextUtil.getContext().getCacheDir(), "HttpCache");
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100);
 
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder()
