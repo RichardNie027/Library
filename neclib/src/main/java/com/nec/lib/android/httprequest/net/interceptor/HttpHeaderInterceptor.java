@@ -26,7 +26,7 @@ public class HttpHeaderInterceptor implements Interceptor {
 
         Request originalRequest = chain.request();
 
-        Map<String, String> heads = ApiConfig.getHeaders();
+        Map<String, String> headers = ApiConfig.getHeaders();
 
         String token = ApiConfig.getToken();
 
@@ -37,17 +37,17 @@ public class HttpHeaderInterceptor implements Interceptor {
                 .addHeader("Accept-Encoding", "identity");
 
         //动态添加Header
-        if (null != heads) {
+        if (null != headers) {
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
-                heads.forEach(new BiConsumer<String, String>() {
+                headers.forEach(new BiConsumer<String, String>() {
                     @Override
                     public void accept(String key, String value) {
                         authorization.addHeader(key, value);
                     }
                 });
             } else {
-                Iterator<Map.Entry<String, String>> iterator = heads.entrySet().iterator();
-                if (iterator.hasNext()) {
+                Iterator<Map.Entry<String, String>> iterator = headers.entrySet().iterator();
+                while (iterator.hasNext()) {
                     Map.Entry<String, String> entry = iterator.next();
                     authorization.addHeader(entry.getKey(), entry.getValue());
                 }
