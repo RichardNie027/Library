@@ -209,7 +209,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
                 listItemStaggerView = LayoutInflater.from(parent.getContext()).inflate(resId, parent, false);
                 listItemStaggerView.setClickable(itemClickable);
             } else {
-                listItemStaggerView = loadDefaultListItemStaggerLayout(parent);
+                listItemStaggerView = loadDefaultListItemStaggerLayout(parent, false);
             }
             ViewGroup.LayoutParams layoutParams = listItemStaggerView.getLayoutParams();
             layoutParams.width = UiUtil.dp2px(parent.getContext(), UiUtil.sScreenWidthInDp/mColumnCount);
@@ -226,7 +226,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
                     listItemLinearView.setBackground(drawable);
                 }
             } else {
-                listItemLinearView = loadDefaultListItemLinearLayout(parent);
+                listItemLinearView = loadDefaultListItemLinearLayout(parent, false);
             }
             return createViewHolder(mLinearViewHolderClass, listItemLinearView);
         }
@@ -242,12 +242,13 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     /**加载默认的fragment_load_more_list_item_linear*/
-    private View loadDefaultListItemLinearLayout(ViewGroup parent) {
+    private View loadDefaultListItemLinearLayout(ViewGroup parent, boolean attachToRoot) {
         missingLinearLayout = true;
         LinearLayout mLinearLayout = new LinearLayout(parent.getContext());
         LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, UiUtil.dp2px(parent.getContext(),30));
         mLinearLayout.setLayoutParams(mLayoutParams1);
-        parent.addView(mLinearLayout);
+        if(attachToRoot)
+            parent.addView(mLinearLayout);
 
         TextView textView = new TextView(parent.getContext());
         textView.setTextColor(ResUtil.getColor("colorPrimary", parent.getContext()));
@@ -261,14 +262,15 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     /**加载默认的fragment_load_more_list_item_stagger*/
-    private View loadDefaultListItemStaggerLayout(ViewGroup parent) {
+    private View loadDefaultListItemStaggerLayout(ViewGroup parent, boolean attachToRoot) {
         missingStaggerLayout = true;
         CardView mCardView = new CardView(parent.getContext());
         LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(RecyclerView.LayoutParams.WRAP_CONTENT, RecyclerView.LayoutParams.WRAP_CONTENT);
         int margin1 = UiUtil.dp2px(parent.getContext(),3);
         mLayoutParams1.setMargins(margin1, margin1, margin1, margin1);
         mCardView.setLayoutParams(mLayoutParams1);
-        parent.addView(mCardView);
+        if(attachToRoot)
+            parent.addView(mCardView);
 
         TextView textView = new TextView(parent.getContext());
         textView.setTextColor(ResUtil.getColor("colorPrimary", parent.getContext()));

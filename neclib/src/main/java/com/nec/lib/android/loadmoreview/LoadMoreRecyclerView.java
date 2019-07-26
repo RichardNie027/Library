@@ -222,7 +222,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
                 if(footerResId != 0) {
                     footerView = LayoutInflater.from(parent.getContext()).inflate(footerResId , parent, false);
                 } else {
-                    footerView = loadDefaultFooterLayout(parent);
+                    footerView = loadDefaultFooterLayout(parent, false);
                 }
                 return new FooterViewHolder(footerView);
             } else { // type normal
@@ -231,7 +231,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
         }
 
         /**加载默认的FooterBar*/
-        private View loadDefaultFooterLayout(ViewGroup parent) {
+        private View loadDefaultFooterLayout(ViewGroup parent, boolean attachToRoot) {
             LinearLayout mLinearLayout = new LinearLayout(parent.getContext());
             mLinearLayout.setBackgroundColor(ResUtil.getColor("colorSecond", parent.getContext()));
             mLinearLayout.setGravity(Gravity.CENTER);
@@ -240,7 +240,8 @@ public class LoadMoreRecyclerView extends RecyclerView {
             mLinearLayout.setPadding(mPadding, mPadding, mPadding, mPadding);
             LinearLayout.LayoutParams mLayoutParams1 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             mLinearLayout.setLayoutParams(mLayoutParams1);
-            parent.addView(mLinearLayout);
+            if(attachToRoot)
+                parent.addView(mLinearLayout);
 
             ProgressBar progressBar = new ProgressBar(parent.getContext());
             int mProgressBarSize = UiUtil.dp2px(parent.getContext(),25);

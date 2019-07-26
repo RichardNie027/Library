@@ -1,7 +1,5 @@
 package com.nec.lib.android.utils;
 
-import junit.framework.Assert;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+
+import jxl.common.Assert;
 
 public class BeanUtil {
     /**
@@ -214,7 +214,7 @@ public class BeanUtil {
      * 循环向上转型,获取对象的DeclaredField.
      */
     protected static Field getDeclaredField(final Object object, final String fieldName) {
-        Assert.assertNotNull(object);
+        Assert.verify(object!=null);
         return getDeclaredField(object.getClass(), fieldName);
     }
 
@@ -223,8 +223,8 @@ public class BeanUtil {
      */
     @SuppressWarnings("unchecked")
     protected static Field getDeclaredField(final Class clazz, final String fieldName) {
-        Assert.assertNotNull(clazz);
-        Assert.assertFalse(fieldName.isEmpty());
+        Assert.verify(clazz!=null);
+        Assert.verify(!fieldName.isEmpty());
         for (Class superClass = clazz; superClass != Object.class; superClass = superClass.getSuperclass()) {
             try {
                 return superClass.getDeclaredField(fieldName);
