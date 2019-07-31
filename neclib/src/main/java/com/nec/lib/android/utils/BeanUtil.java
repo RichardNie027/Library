@@ -4,14 +4,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import jxl.common.Assert;
 
 public class BeanUtil {
+
     /**
      * 利用反射实现对象之间属性复制
      * @param from
@@ -29,40 +32,33 @@ public class BeanUtil {
      * @throws
      */
     public static void copyPropertiesExclude(Object from, Object to, String[] excludsArray) {
-        List<String> excludesList = null;
-        if(excludsArray != null && excludsArray.length > 0) {
-            excludesList = Arrays.asList(excludsArray); //构造列表对象
+        if (from == null) {
+            return;
         }
-        Method[] fromMethods = from.getClass().getDeclaredMethods();
-        Method[] toMethods = to.getClass().getDeclaredMethods();
-        Method fromMethod = null, toMethod = null;
-        String fromMethodName = null, toMethodName = null;
-        for (int i = 0; i < fromMethods.length; i++) {
-            fromMethod = fromMethods[i];
-            fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains("get"))
-                continue;
-            //排除列表检测
-            if(excludesList != null && excludesList.contains(fromMethodName.substring(3).toLowerCase())) {
+        Field[] fromFields = from.getClass().getDeclaredFields();
+        Field[] toFields = to.getClass().getDeclaredFields();
+        Field fromField = null, toField = null;
+        String key = null;
+        OUTER:
+        for (int i = 0; i < fromFields.length; i++) {
+            fromField = fromFields[i];
+            key = fromField.getName();
+            if (key.equals("serialVersionUID") || key.startsWith("$")) {
                 continue;
             }
-            toMethodName = "set" + fromMethodName.substring(3);
-            toMethod = findMethodByName(toMethods, toMethodName);
-            if (toMethod == null)
-                continue;
-            try {
-                Object value = fromMethod.invoke(from, new Object[0]);
-                if(value == null)
-                    continue;
-                //集合类判空处理
-                if(value instanceof Collection) {
-                    Collection newValue = (Collection)value;
-                    if(newValue.size() <= 0)
-                        continue;
+            if(excludsArray != null && excludsArray.length > 0)
+                for(String excludeKey: excludsArray)
+                    if(key.equals(excludeKey))
+                        continue OUTER;
+            Object value = getFieldValue(from, key);
+            for(int j=0; j < toFields.length; j++) {
+                toField = toFields[j];
+                if(toField.getName().equals(key)) {
+                    try {
+                        setFieldValue(to, key, value);
+                        break;
+                    } catch (Exception e) {}
                 }
-                toMethod.invoke(to, new Object[] {value});
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new RuntimeException(e.getMessage());
             }
         }
     }
@@ -75,48 +71,125 @@ public class BeanUtil {
      * @throws
      */
     public static void copyPropertiesInclude(Object from, Object to, String[] includsArray) {
-        List<String> includesList = null;
-        if(includsArray != null && includsArray.length > 0) {
-            includesList = Arrays.asList(includsArray); //构造列表对象
-        } else {
+        if (from == null) {
             return;
         }
-        Method[] fromMethods = from.getClass().getDeclaredMethods();
-        Method[] toMethods = to.getClass().getDeclaredMethods();
-        Method fromMethod = null, toMethod = null;
-        String fromMethodName = null, toMethodName = null;
-        for (int i = 0; i < fromMethods.length; i++) {
-            fromMethod = fromMethods[i];
-            fromMethodName = fromMethod.getName();
-            if (!fromMethodName.contains("get"))
-                continue;
-            //排除列表检测
-            String str = fromMethodName.substring(3);
-            if(!includesList.contains(str.substring(0,1).toLowerCase() + str.substring(1))) {
+        Field[] fromFields = from.getClass().getDeclaredFields();
+        Field[] toFields = to.getClass().getDeclaredFields();
+        Field fromField = null, toField = null;
+        String key = null;
+        OUTER:
+        for (int i = 0; i < fromFields.length; i++) {
+            fromField = fromFields[i];
+            key = fromField.getName();
+            if (key.equals("serialVersionUID") || key.startsWith("$")) {
                 continue;
             }
-            toMethodName = "set" + fromMethodName.substring(3);
-            toMethod = findMethodByName(toMethods, toMethodName);
-            if (toMethod == null)
+            boolean found = false;
+            if(includsArray != null && includsArray.length > 0)
+                for(String excludeKey: includsArray)
+                    if(key.equals(excludeKey)) {
+                        found = true;
+                        break;
+                    }
+            if(!found)
                 continue;
-            try {
-                Object value = fromMethod.invoke(from, new Object[0]);
-                if(value == null)
-                    continue;
-                //集合类判空处理
-                if(value instanceof Collection) {
-                    Collection newValue = (Collection)value;
-                    if(newValue.size() <= 0)
-                        continue;
+            Object value = getFieldValue(from, key);
+            for(int j=0; j < toFields.length; j++) {
+                toField = toFields[j];
+                if(toField.getName().equals(key)) {
+                    try {
+                        setFieldValue(to, key, value);
+                        break;
+                    } catch (Exception e) {}
                 }
-                toMethod.invoke(to, new Object[] {value});
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new RuntimeException(e.getMessage());
             }
         }
     }
 
     //////////////////////////////////////////////////////////////////////////////
+
+    public static Map<String, Object> objectToMap(Object object) {
+        return objectToMap(object,null);
+    }
+
+    /**
+     * Bean to Map， Date转String yyyyMMddHHmmss
+     * @param object Bean
+     * @param excludsArray 排除属性
+     * @return
+     */
+    public static Map<String, Object> objectToMap(Object object, String[] excludsArray) {
+        if (object == null) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<String, Object>();
+        Field[] declaredFields = object.getClass().getDeclaredFields();
+        OUTER:
+        for (Field field : declaredFields) {
+            field.setAccessible(true);
+            try {
+                String key = field.getName();
+                if (key.equals("serialVersionUID") || key.startsWith("$")) {
+                    continue;
+                }
+                if(excludsArray != null && excludsArray.length > 0)
+                    for(String excludeKey: excludsArray)
+                        if(key.equals(excludeKey))
+                            continue OUTER;
+                Object value = getFieldValue(object, key);
+                if(value instanceof Collection)
+                    continue;
+                if (value == null) {
+                    map.put(key, null);
+                } else if (value instanceof Date) {
+                    String dateStr = new SimpleDateFormat("yyyyMMddHHmmss").format(((Date) value).getTime());
+                    map.put(key, dateStr);
+                } else if (value instanceof Number) {
+                    double dbNum = ((Number) value).doubleValue();
+                    // 数字超过long的最大值，返回浮点类型
+                    if (dbNum > Long.MAX_VALUE) {
+                        map.put(key, dbNum);
+                    } else {
+                        // 判断数字是否为整数值
+                        long lngNum = (long) dbNum;
+                        if (dbNum == lngNum) {
+                            map.put(key, lngNum);
+                        } else {
+                            map.put(key, dbNum);
+                        }
+                    }
+                } else if (value.getClass().isEnum()) {
+                    Method method = value.getClass().getMethod("getCode", null);
+                    Object val = method.invoke(value, null);
+                    map.put(key, String.valueOf(val));
+                } else if (value.getClass().isPrimitive()) {
+                    if (value.getClass().getName().equals("int")) {
+                        value = (Integer)value;
+                    } else if (value.getClass().getName().equals("long")) {
+                        value = (Long)value;
+                    } else if (value.getClass().getName().equals("double")) {
+                        value = (Double)value;
+                    } else if (value.getClass().getName().equals("short")) {
+                        value = (Short)value;
+                    } else if (value.getClass().getName().equals("float")) {
+                        value = (Float)value;
+                    } else if (value.getClass().getName().equals("boolean")) {
+                        value = (Boolean)value;
+                    } else if (value.getClass().getName().equals("byte")) {
+                        value = (Byte)value;
+                    }
+                    map.put(key, value + "");
+                } else {
+                    map.put(key, value.toString());
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                return null;
+            }
+        }
+        return map;
+    }
 
     public static boolean equalsInRange(Object obj1, Object obj2, String... names) {
         if(obj1==null && obj2==null)

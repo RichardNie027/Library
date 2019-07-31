@@ -58,7 +58,7 @@ public class RetrofitFactory {
         OkHttpClient httpClient = httpClientBuilder.build();
 
         Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .setDateFormat("yyyyMMddHHmmss")
                 .serializeNulls()
                 .registerTypeAdapterFactory(new NullTypeAdapterFactory())
                 .setPrettyPrinting()
