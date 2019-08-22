@@ -4,7 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.nec.lib.android.utils.AndroidUtil;
 
 public class BaseFragment extends Fragment {
 
@@ -17,9 +20,11 @@ public class BaseFragment extends Fragment {
         _this = this;
     }
 
-    public void hideKeyboard(View view) {
-        InputMethodManager im = (InputMethodManager) _this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    /**
+     *   设置输入法隐藏
+     */
+    public void hideKeyboard(boolean hide) {
+        AndroidUtil.hideKeyboard(_this.getActivity(), hide);
     }
 
 }

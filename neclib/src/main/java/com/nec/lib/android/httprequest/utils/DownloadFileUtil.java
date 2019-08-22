@@ -14,22 +14,26 @@ import java.util.Objects;
 public class DownloadFileUtil {
 
 
-    public static File getFileFromUrl(String url) throws IOException {
-        String saveDirPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + "/temp";
+    public static File getFileFromUrl(String url, String savePath) throws IOException {
+        savePath = savePath==null || savePath.isEmpty() ? "/Download" : (savePath.startsWith("/") ? savePath : "/"+savePath);
+        String saveDirPath = Environment.getExternalStorageDirectory().getAbsoluteFile() + savePath;
         //SDCard的状态
         String state = Environment.getExternalStorageState();
         //判断SDCard是否挂载上
         if (!Environment.MEDIA_MOUNTED.equals(state)) {
-            Toast.makeText(AppContextUtil.getContext(), "SD卡不存在", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AppContextUtil.getContext(), "存储不可用", Toast.LENGTH_SHORT).show();
             return null;
         }
-        String savePath = isExistDir(saveDirPath);
-        return new File(savePath, getNameFromUrl(url));
-
+        saveDirPath = isExistDir(saveDirPath);
+        return new File(saveDirPath, getNameFromUrl(url));
     }
 
-    public static String getDownloadPath(String url) throws IOException {
-        File file = getFileFromUrl(url);
+//    public static File getFileFromUrl(String url) throws IOException {
+//        return getFileFromUrl(url, null);
+//    }
+
+    public static String getDownloadPath(String url, String savePath) throws IOException {
+        File file = getFileFromUrl(url, savePath);
         return Objects.requireNonNull(file).getAbsolutePath();
     }
 

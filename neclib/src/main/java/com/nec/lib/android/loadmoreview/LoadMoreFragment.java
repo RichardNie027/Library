@@ -52,7 +52,7 @@ import java.lang.reflect.Constructor;
         android:layout_height="match_parent">
 
         <com.tlg.storehelper.loadmorerecycler.LoadMoreRecyclerView
-            android:id="@+id/recycle_list"
+            android:id="@+id/recycler_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
@@ -80,7 +80,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
     /**布局文件中SwipeRefreshLayout的ID，必要*/
     protected String mIdOfSwipeRefreshLayout = "refresh_layout";
     /**布局文件中LoadMoreRecyclerView的ID，必要*/
-    protected String mIdOfRecyclerView = "recycle_list";
+    protected String mIdOfRecyclerView = "recycler_list";
     /**切换模式的视图控件，类型为TextView或Button，非必要*/
     protected String mIdOfModeSwitchButton = "mode_switch_button";
     ////////////////资源（Layout/ID）前提 END////////////////

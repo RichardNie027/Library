@@ -37,6 +37,7 @@ public class DownloaderManager {
     private static final int DOWNLOAD_UPDATE = 1;
     private static final int DOWNLOAD_EXECUTE = 2;
 
+    private String savePath = "/Download";
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
@@ -165,6 +166,11 @@ public class DownloaderManager {
         }
     }
 
+    public DownloaderManager setSavePath(String savePath) {
+        this.savePath = savePath;
+        return this;
+    }
+
     private void downloadSave(Response response, long startsPoint) {
         ResponseBody body = response.body();
         InputStream in = Objects.requireNonNull(body).byteStream();
@@ -173,11 +179,12 @@ public class DownloaderManager {
         RandomAccessFile randomAccessFile = null;
 
         try {
-            File file = DownloadFileUtil.getFileFromUrl(url);
+            File file = DownloadFileUtil.getFileFromUrl(url, savePath);
             randomAccessFile = new RandomAccessFile(file, "rwd");
             //Chanel NIO中的用法，由于RandomAccessFile没有使用缓存策略，直接使用会使得下载速度变慢，亲测缓存下载3.3秒的文件，用普通的RandomAccessFile需要20多秒。
             channelOut = randomAccessFile.getChannel();
             // 内存映射，直接使用RandomAccessFile，是用其seek方法指定下载的起始位置，使用缓存下载，在这里指定下载位置。
+            System.out.println(body.contentLength());
             MappedByteBuffer mappedBuffer = channelOut.map(FileChannel.MapMode.READ_WRITE, startsPoint, body.contentLength());
             byte[] buffer = new byte[1024];
             int len;

@@ -18,11 +18,12 @@ import android.widget.EditText;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.application.MyApplication;
 import com.nec.lib.android.httprequest.use.BaseObserver;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View.OnFocusChangeListener, View.OnTouchListener {
+public class BaseRxAppCompatActivity extends RxAppCompatActivity {
 
     /**Disposable生命周期容器*/
     protected CompositeDisposable mCompositeDisposable = null;
@@ -31,8 +32,6 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
 
     /**全屏，隐藏系统顶部状态栏*/
     protected boolean mFullScreen = false;
-    /**需要隐藏输入法的视图*/
-    protected View[] mHideInputViews;
 
     /**自己的弱引用*/
     protected BaseRxAppCompatActivity _this;
@@ -65,58 +64,11 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity implements View
         super.onStop();
     }
 
-    @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        //用于控件失去焦点时隐藏输入法
-        if (!hasFocus) {
-            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-        //用于隐藏输入法
-        if(EditText.class.isAssignableFrom(view.getClass())) {
-            ((EditText) view).setInputType(InputType.TYPE_NULL);
-            return false;
-        } else
-            return true;
-    }
-
     /**
-     *     设置控件的OnFocusChangeListener
-     *     用于控件失去焦点时隐藏输入法。
-     *
-     *     在Activity顶层布局中，需要设置：
-     *     android:clickable="true"
-     *     android:focusableInTouchMode="true"
+     *   设置输入法隐藏
      */
-    public void setOnFocusChangeListener(View... views) {
-        for(View view: views) {
-            if(view != null)
-                view.setOnFocusChangeListener(this);
-        }
-    }
-
-    /**
-     *    设置控件的OnTouchListener
-     *    用于隐藏输入法。
-     */
-    protected void setHideInputViews(View... views) {
-        for(View view: views) {
-            if(view != null)
-                view.setOnTouchListener(this);
-        }
-        mHideInputViews = views;
-    }
-
-    /**
-     *   隐藏输入法
-     */
-    public void hideKeyboard(View view) {
-        InputMethodManager im = (InputMethodManager) _this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    public void hideKeyboard(boolean hide) {
+        AndroidUtil.hideKeyboard(_this, hide);
     }
 
     private void initReceiver() {
