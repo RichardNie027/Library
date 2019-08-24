@@ -2,7 +2,7 @@ package com.nec.lib.android.httprequest.utils;
 
 import android.content.Context;
 import android.util.ArrayMap;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 

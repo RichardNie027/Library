@@ -1,6 +1,6 @@
 package com.nec.lib.android.httprequest.use;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
