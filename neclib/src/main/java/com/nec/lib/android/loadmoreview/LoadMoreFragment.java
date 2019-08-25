@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.nec.lib.android.application.MyApplication;
 import com.nec.lib.android.base.BaseFragment;
+import com.nec.lib.android.utils.AndroidUtil;
 import com.nec.lib.android.utils.ResUtil;
 import com.nec.lib.android.utils.TextDrawable;
 
@@ -47,19 +48,19 @@ import java.lang.reflect.Constructor;
             android:textSize="14dp" />
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.tlg.storehelper.loadmorerecycler.LoadMoreRecyclerView
+        <com.nec.lib.android.loadmoreview.LoadMoreRecyclerView
             android:id="@+id/recycler_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            tools:listitem="@layout/fragment_default_load_more_list_item" />
+            tools:listitem="@layout/fragment_default_load_more_list_item_linear" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>
  */
 
@@ -311,7 +312,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
             mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle);     //发起数据异步请求
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            Toast.makeText(MyApplication.getInstance(), "加载数据失败", Toast.LENGTH_SHORT).show();
+            AndroidUtil.showToast("加载数据失败");
         }
         mRecyclerView.setAdapter(myRecyclerViewItemAdapter);
         mRecyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {

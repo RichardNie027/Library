@@ -148,9 +148,9 @@ public class ExcelUtil {
 
                 String fullpath = fileName.substring(0, fileName.lastIndexOf("/"));
                 String finalPath = fullpath.substring(fullpath.indexOf("/"));
-                Toast.makeText(MyApplication.getInstance(), "导出成功，文件目录" + finalPath, Toast.LENGTH_LONG).show();
+                AndroidUtil.showToastLong("导出成功，文件目录" + finalPath);
             } catch (Exception e) {
-                Toast.makeText(MyApplication.getInstance(), "导出失败", Toast.LENGTH_LONG).show();
+                AndroidUtil.showToastLong("导出失败");
                 Log.e(ExcelUtil.class.getName(), e.getMessage(), e);
                 success = false;
             } finally {

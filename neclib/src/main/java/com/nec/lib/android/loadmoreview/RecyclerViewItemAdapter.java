@@ -22,7 +22,6 @@ import java.util.List;
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="30dp">
-
     <TextView
         android:id="@+id/id"
         android:layout_width="60dp"
@@ -30,7 +29,6 @@ import java.util.List;
         android:gravity="center|center_horizontal"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="14sp" />
-
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
@@ -39,29 +37,26 @@ import java.util.List;
         android:gravity="center|start"
         android:textAppearance="?attr/textAppearanceListItem"
         android:textSize="14sp" />
-
 </LinearLayout>
- */
+*/
 /* fragment_default_load_more_list_item_stagger.xml 默认布局
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:orientation="horizontal">
-
     <ImageView
         android:id="@+id/icon"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@mipmap/ic_launcher" />
-
     <TextView
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"/>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>
  */
 
 /**
