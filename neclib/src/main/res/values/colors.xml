@@ -5,6 +5,7 @@
     <color name="colorPrimaryLight">#FF5983</color>
     <color name="colorSecond">#EBEDF4</color>
     <color name="colorSecondDark">#AAB8A3</color>
+    <color name="transparency">#00FFFFFF</color>
 
     <color name="white">#FFFFFF</color><!--白色 -->
     <color name="ivory">#FFFFF0</color><!--象牙色 -->

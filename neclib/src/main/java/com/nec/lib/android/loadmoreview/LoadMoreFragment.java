@@ -2,6 +2,8 @@ package com.nec.lib.android.loadmoreview;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Layout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +19,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nec.lib.android.R;
 import com.nec.lib.android.application.MyApplication;
 import com.nec.lib.android.base.BaseFragment;
 import com.nec.lib.android.utils.AndroidUtil;
+import com.nec.lib.android.utils.ImageUtil;
 import com.nec.lib.android.utils.ResUtil;
 import com.nec.lib.android.utils.TextDrawable;
 
@@ -375,12 +380,9 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
                 loadMoreDelayIfPossible();
             //空白页效果
             if(myRecyclerViewItemAdapter.getDataSize() == 0) {
-                TextDrawable textDrawable = new TextDrawable(getContext());
-                textDrawable.setText("\n【没有发现任何数据】");
-                textDrawable.setTextColor(Color.LTGRAY);
-                textDrawable.setTextAlign(Layout.Alignment.ALIGN_CENTER);
-                mRecyclerView.setBackground(textDrawable);
-
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(ImageUtil.getBitmapFormResources(_this.getContext(), R.drawable.empty_page));
+                bitmapDrawable.setGravity(Gravity.CENTER);
+                mRecyclerView.setBackground(bitmapDrawable);
             } else
                 mRecyclerView.setBackground(null);
         }

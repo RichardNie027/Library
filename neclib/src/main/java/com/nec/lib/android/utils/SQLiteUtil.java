@@ -33,7 +33,7 @@ try {
 }
  *
  * db.insert(TABLE_NAME, null, contentValues);
- * db.update(TABLE_NAME, whereClause, whereArgs);
+ * db.update(TABLE_NAME, contentValues, whereClause, whereArgs);
  * db.delete(TABLE_NAME, whereClause);
  * db.execSQL(SQL, Object[] bindArgs);
  * db.rawQuery(SQL, String[] selectionArgs);
