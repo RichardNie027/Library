@@ -314,7 +314,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
             Constructor constructor = mAdapterClass.getDeclaredConstructor();
             myRecyclerViewItemAdapter = (TAdapter) constructor.newInstance();
             modeAdaptation(mSwitchModeView, mDisplayMode);
-            mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle);     //发起数据异步请求
+            mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle, _this.getActivity());     //发起数据异步请求
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
             AndroidUtil.showToast("加载数据失败");
@@ -327,7 +327,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
                     @Override
                     public void run() {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        mAsynDataRequest.fetchData(++mPage, 3, mHandler, mDataBundle);   //发起数据异步请求
+                        mAsynDataRequest.fetchData(++mPage, 3, mHandler, mDataBundle, _this.getActivity());   //发起数据异步请求
                     }
                 }, 200);
             }
@@ -340,7 +340,8 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
 //        mSwipeRefreshLayout.setRefreshing(false);
 //        myRecyclerViewItemAdapter.clearData();
 //        mPage = 0;
-        mAsynDataRequest.fetchData(0, 2, mHandler, mDataBundle); //发起数据异步请求
+        mRecyclerView.scrollToPosition(0);
+        mAsynDataRequest.fetchData(0, 2, mHandler, mDataBundle, _this.getActivity()); //发起数据异步请求
     }
 
     @Override

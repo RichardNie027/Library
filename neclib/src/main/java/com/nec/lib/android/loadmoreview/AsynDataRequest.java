@@ -1,5 +1,6 @@
 package com.nec.lib.android.loadmoreview;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -26,11 +27,12 @@ public interface AsynDataRequest extends Serializable {
      message.setData(messageBundle);
      handler.sendMessage(message);
 
-     * @param page 页码
+     * @param page 页码 zero-base
      * @param what 数据区分
      * @param handler 消息句柄
      * @param dataBundle 条件参数
+     * @param activity 调用方的Activity
      */
-    public void fetchData(int page, int what, Handler handler, Bundle dataBundle);
+    public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity);
 
 }
