@@ -28,8 +28,8 @@ try {
 } finally {
     if (db != null) {
         db.endTransaction();
+        db.close();
     }
-    db.close();
 }
  *
  * db.insert(TABLE_NAME, null, contentValues);

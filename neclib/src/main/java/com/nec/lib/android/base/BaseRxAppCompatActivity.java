@@ -17,6 +17,8 @@ import com.nec.lib.android.httprequest.use.BaseObserver;
 import com.nec.lib.android.utils.AndroidUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.util.Arrays;
+
 import io.reactivex.disposables.CompositeDisposable;
 
 public class BaseRxAppCompatActivity extends RxAppCompatActivity {
@@ -64,7 +66,9 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity {
      *   设置输入法隐藏
      */
     public void hideKeyboard(boolean hide) {
-        AndroidUtil.hideKeyboard(_this, hide);
+        String[] specialSystemModels = {"95S Series"};
+        if(Arrays.binarySearch(specialSystemModels, AndroidUtil.SystemInfo.getSystemModel()) < 0)
+            AndroidUtil.hideKeyboard(_this, hide);
     }
 
     private void initReceiver() {

@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+@Deprecated
 public class BaseAppCompatActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnTouchListener {
 
     //全屏，隐藏系统顶部状态栏

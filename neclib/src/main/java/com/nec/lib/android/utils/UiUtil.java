@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.nec.lib.android.application.MyApplication;
 
@@ -65,5 +66,9 @@ public class UiUtil {
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
         sScreenWidthInDp = (int) (sScreenWidthInPx / sScreenDensity);   // 屏幕宽度(dp)
         sScreenHeightInDp = (int) (sScreenHeightInPx / sScreenDensity); // 屏幕高度(dp)
+
+//        String printInfo = "sScreenWidthInPx:" + sScreenWidthInPx + ";\nsScreenHeightInPx:" + sScreenHeightInPx + ";\nsScreenDensity:" + sScreenDensity + ";\nsScreenWidthInDp:" + sScreenWidthInDp + ";\nsScreenHeightInDp:" + sScreenHeightInDp;
+//        System.out.println(printInfo);
+//        Toast.makeText(context, printInfo, Toast.LENGTH_LONG).show();
     }
 }

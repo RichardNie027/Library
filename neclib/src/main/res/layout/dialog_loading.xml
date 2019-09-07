@@ -28,7 +28,7 @@
         android:textColor="#FF999999"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:textSize="10dp"
+        android:textSize="14sp"
         tools:text="Loading..."
         android:layout_marginTop="30dp"
         />
