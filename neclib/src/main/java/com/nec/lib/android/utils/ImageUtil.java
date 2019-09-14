@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
+import androidx.core.content.ContextCompat;
+
 public class ImageUtil {
 
     public static BitmapFactory.Options getBitmapOption(int inSampleSize){
@@ -37,7 +39,8 @@ public class ImageUtil {
     }
 
     public static Drawable getDrawableFromResources(Context context, int resId){
-        return context.getResources().getDrawable(resId);
+        //return context.getResources().getDrawable(resId);   //deprecated
+        return ContextCompat.getDrawable(context, resId);
     }
 
     public static Drawable getDrawbleFormBitmap(Context context,Bitmap bitmap){

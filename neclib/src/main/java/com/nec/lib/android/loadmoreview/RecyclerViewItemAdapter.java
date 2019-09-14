@@ -172,7 +172,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     public void clearData() {
-        mValues.clear();
+        if(mValues != null)
+            mValues.clear();
     }
 
     public void setData(List<T> datas) {
@@ -184,7 +185,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     }
 
     public void addDatas(List<T> datas) {
-        mValues.addAll(datas);
+        if(mValues != null)
+            mValues.addAll(datas);
     }
 
     @Override

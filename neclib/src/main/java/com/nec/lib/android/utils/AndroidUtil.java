@@ -6,6 +6,8 @@ import android.app.Instrumentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -14,6 +16,8 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.nec.lib.android.application.MyApplication;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class AndroidUtil {
@@ -135,5 +139,28 @@ public class AndroidUtil {
                 .setCancelable(false)
                 .setPositiveButton("确定", null)
                 .show();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////
+
+    public static List<View> getAllViews(Activity activity, boolean recursion) {
+        List<View> list = getAllChildViews(activity.getWindow().getDecorView(), recursion);
+        return list;
+    }
+
+    private static List<View> getAllChildViews(View view, boolean recursion) {
+        List<View> allchildren = new ArrayList<View>();
+        if (view instanceof ViewGroup) {
+            ViewGroup vp = (ViewGroup) view;
+            for (int i = 0; i < vp.getChildCount(); i++) {
+                View viewchild = vp.getChildAt(i);
+                allchildren.add(viewchild);
+                if (recursion) {
+                    //再次 调用本身（递归）
+                    allchildren.addAll(getAllChildViews(viewchild, recursion));
+                }
+            }
+        }
+        return allchildren;
     }
 }
