@@ -261,22 +261,22 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
      * 2、为页面传参，需要在LoadMoreFragment子类定义新的属性。
      * @param bundle 通过newInstance方法传入的参数集
      */
-    protected void doParamBundle(Bundle bundle) {
+    /*
         //1、组装mDataBundle
-        //mDataBundle.putLong("dataParam1", bundle.getLong("dataParam1"));
-        //mDataBundle.putInt("dataParam1", bundle.getInt("dataParam1"));
-        //mDataBundle.putFloat("dataParam1", bundle.getFloat("dataParam1"));
-        //mDataBundle.putString("dataParam1", bundle.getString("dataParam1"));
-        //mDataBundle.putBoolean("dataParam1", bundle.getBoolean("dataParam1"));
-        //mDataBundle.putSerializable("dataParam1", bundle.getSerializable("dataParam1"));
+        mDataBundle.putLong("dataParam1", bundle.getLong("dataParam1"));
+        mDataBundle.putInt("dataParam1", bundle.getInt("dataParam1"));
+        mDataBundle.putFloat("dataParam1", bundle.getFloat("dataParam1"));
+        mDataBundle.putString("dataParam1", bundle.getString("dataParam1"));
+        mDataBundle.putBoolean("dataParam1", bundle.getBoolean("dataParam1"));
+        mDataBundle.putSerializable("dataParam1", bundle.getSerializable("dataParam1"));
 
         //2、为页面传参
-        //mParam1 = bundle.getString("dataParam1"); //需要定义类属性mParam1
-    }
+        mParam1 = bundle.getString("dataParam1"); //需要定义类属性mParam1
+     */
+    protected abstract void doParamBundle(Bundle bundle);
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // find view
         View view = inflater.inflate(ResUtil.getLayoutId(mLayoutOfFragmentItemList, getContext()), container, false);
         mRecyclerView = (LoadMoreRecyclerView) view.findViewById(ResUtil.getId(mIdOfRecyclerView, getContext()));
@@ -308,17 +308,19 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
             mRecyclerView.setLayoutManager(new StrongLinearLayoutManager(getActivity()));
         }
 
-        //自动加载初始数据
         try {
             //myRecyclerViewItemAdapter = mAdapterClass.newInstance();
             Constructor constructor = mAdapterClass.getDeclaredConstructor();
             myRecyclerViewItemAdapter = (TAdapter) constructor.newInstance();
-            modeAdaptation(mSwitchModeView, mDisplayMode);
-            mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle, _this.getActivity());     //发起数据异步请求
         } catch (Throwable t) {
             Log.e(this.getClass().getName(), t.getMessage(), t);
-            AndroidUtil.showToast("加载数据失败");
+            AndroidUtil.showToast("初始化出错");
         }
+        modeAdaptation(mSwitchModeView, mDisplayMode);  //适配显示模式
+
+        initView(view, getArguments());
+        //自动加载初始数据
+        mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle, _this.getActivity());     //发起数据异步请求
         mRecyclerView.setAdapter(myRecyclerViewItemAdapter);
         mRecyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
@@ -333,6 +335,12 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
             }
         });
         return view;
+    }
+
+    /**LoadMoreFragment覆盖了BaseFragment的onCreateView，此方法无效*/
+    @Deprecated
+    protected int setLayoutResourceID() {
+        return 0;
     }
 
     /**刷新RecyclerView*/

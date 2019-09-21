@@ -3,86 +3,59 @@ package com.nec.lib.android.base;
 import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.text.InputType;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
+
+import com.nec.lib.android.utils.AndroidUtil;
+
+import java.util.Arrays;
 
 @Deprecated
-public class BaseAppCompatActivity extends AppCompatActivity implements View.OnFocusChangeListener, View.OnTouchListener {
+public abstract class BaseAppCompatActivity extends AppCompatActivity {
 
-    //全屏，隐藏系统顶部状态栏
+    /**全屏，隐藏系统顶部状态栏*/
     protected boolean mFullScreen = false;
-    //
-    protected View[] mHideInputViews;
 
     //自己的弱引用
     protected BaseAppCompatActivity _this;
 
+    protected abstract void beforeCreate(Bundle savedInstanceState);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        beforeCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        setContentView(setLayoutResourceID());
         //全屏
         if(mFullScreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         _this = this;
+        //初始化View
+        initView();
     }
 
-    @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        //用于控件失去焦点时隐藏输入法
-        if (!hasFocus) {
-            InputMethodManager im = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
+    protected abstract void initView();
 
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
-        //用于隐藏输入法
-        if(EditText.class.isAssignableFrom(view.getClass())) {
-            ((EditText) view).setInputType(InputType.TYPE_NULL);
-            return false;
-        } else
-            return true;
-    }
-
-    /**
-     *     设置控件的OnFocusChangeListener
-     *     用于控件失去焦点时隐藏输入法。
-     *
-     *     在Activity顶层布局中，需要设置：
-     *     android:clickable="true"
-     *     android:focusableInTouchMode="true"
-     */
-    public void setOnFocusChangeListener(View... views) {
-        for(View view: views) {
-            if(view != null)
-                view.setOnFocusChangeListener(this);
-        }
-    }
-
-    /**
-     *    设置控件的OnTouchListener
-     *    用于隐藏输入法。
-     */
-    protected void setHideInputViews(View... views) {
-        for(View view: views) {
-            if(view != null)
-                view.setOnTouchListener(this);
-        }
-        mHideInputViews = views;
-    }
+    protected abstract int setLayoutResourceID();
 
     /**
      *   隐藏输入法
      */
-    public void hideKeyboard(View view) {
+    @Deprecated
+    protected void hideKeyboard(View view) {
         InputMethodManager im = (InputMethodManager) _this.getSystemService(Context.INPUT_METHOD_SERVICE);
         im.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    /**
+     *   设置输入法隐藏
+     */
+    protected void hideKeyboard(boolean hide) {
+        String[] specialSystemModels = {"95S Series"};
+        if(Arrays.binarySearch(specialSystemModels, AndroidUtil.SystemInfo.getSystemModel()) < 0)
+            AndroidUtil.hideKeyboard(_this, hide);
     }
 
 }

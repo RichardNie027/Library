@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class BaseRxAppCompatActivity extends RxAppCompatActivity {
+public abstract class BaseRxAppCompatActivity extends RxAppCompatActivity {
 
     /**Disposable生命周期容器*/
     protected CompositeDisposable mCompositeDisposable = null;
@@ -34,9 +34,13 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity {
     /**自己的弱引用*/
     protected BaseRxAppCompatActivity _this;
 
+    protected abstract void beforeCreate(Bundle savedInstanceState);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        beforeCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        setContentView(setLayoutResourceID());
         //全屏
         if(mFullScreen) {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -46,7 +50,13 @@ public class BaseRxAppCompatActivity extends RxAppCompatActivity {
         mCompositeDisposable = new CompositeDisposable();
         //初始化广播接收器
         initReceiver();
+        //初始化View
+        initView();
     }
+
+    protected abstract void initView();
+
+    protected abstract int setLayoutResourceID();
 
     @Override
     protected void onStop() {
