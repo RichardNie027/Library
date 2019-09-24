@@ -82,7 +82,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
     /**Item的数据集*/
     protected List<T> mValues;
     /**显示模式*/
-    protected LoadMoreFragment.DisplayMode mDisplayMode;
+    protected DisplayMode mDisplayMode;
     /**Stagger模式的列数*/
     protected int mColumnCount = 1;
 
@@ -162,11 +162,11 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
         return obj;
     }
 
-    public void switchMode(LoadMoreFragment.DisplayMode displayMode) {
+    public void switchMode(DisplayMode displayMode) {
         switchMode(displayMode, mColumnCount);
     }
 
-    public void switchMode(LoadMoreFragment.DisplayMode displayMode, int columnCount) {
+    public void switchMode(DisplayMode displayMode, int columnCount) {
         this.mDisplayMode = displayMode;
         this.mColumnCount = columnCount<1 || columnCount>9 ? 1 : columnCount;
     }
@@ -235,8 +235,8 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
 
     /**判断是否加载了默认布局*/
     public boolean layoutMissing() {
-        return (mDisplayMode == LoadMoreFragment.DisplayMode.STAGGERED && missingStaggerLayout)
-                || (mDisplayMode == LoadMoreFragment.DisplayMode.LINEAR && missingLinearLayout);
+        return (mDisplayMode == DisplayMode.STAGGERED && missingStaggerLayout)
+                || (mDisplayMode == DisplayMode.LINEAR && missingLinearLayout);
     }
 
     /**加载默认的fragment_load_more_list_item_linear*/
@@ -288,7 +288,7 @@ public abstract class RecyclerViewItemAdapter<T> extends RecyclerView.Adapter<Re
      */
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (mDisplayMode == LoadMoreFragment.DisplayMode.STAGGERED) {
+        if (mDisplayMode == DisplayMode.STAGGERED) {
             StaggeredViewHolder staggeredViewHolder = (StaggeredViewHolder) holder;
             /* assign view controls
             staggeredViewHolder.iconView.setVisibility(View.VISIBLE);
