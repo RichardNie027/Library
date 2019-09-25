@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public interface AsynDataRequest extends Serializable {
 
-    public final String PAGE_CONTENT = "page_content";
+    String PAGE_CONTENT = "page_content";
 
     /**
      * 请求数据，通过消息机制返回结果。
@@ -33,6 +33,6 @@ public interface AsynDataRequest extends Serializable {
      * @param dataBundle 条件参数
      * @param activity 调用方的Activity
      */
-    public void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity);
+    void fetchData(int page, int what, Handler handler, Bundle dataBundle, Activity activity);
 
 }

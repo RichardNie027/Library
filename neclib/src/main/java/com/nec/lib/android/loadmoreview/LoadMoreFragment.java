@@ -71,10 +71,18 @@ import java.lang.reflect.Constructor;
 
 /**
  * 无限加载Fragment
- * 定制布局文件，对应更新子类的sLayoutOfFragmentItemList
  *
  * 调用示例：
+ * 子类中，
+ * 1、实现setLayoutResourceID()
+ * 2、beforeCreate()中设置mIdOfSwipeRefreshLayout和mIdOfRecyclerView（如果修改了默认命名）
+ * 3、实现doParamBundle()，解析Bundle参数：A、组装mDataBundle（数据获取AsynDataRequest需要）；B、为页面传参，需要在LoadMoreFragment子类定义新的属性。
+ * 4、实现initView()，查找控件、设置控件；mAutoload = false;//是否加载初始数据
+ *
  * RecordFragment.newInstance(RecordFragment.class, RecordRecyclerViewItemAdapter.class, new RecordListDataRequest(), dataBundle, LoadMoreFragment.DisplayMode.LINEAR, 3);
+ *
+ *
+ * 调用doRefreshOnRecyclerView，刷新RecyclerView，重新加载控件数据显示（如果修改了数据条件，需要先修改mDataBundle，参照doParamBundle()）
  *
  * @param <TAdapter extends RecyclerViewItemAdapter>
  */
@@ -82,7 +90,7 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
 
     ////////////////资源（Layout/ID）前提 START////////////////
     //布局xml文件的内部资源ID
-    /**布局文件中SwipeRefreshLayout的ID，必要*/
+    /**布局文件中SwipeRefreshLayout的ID（布局中可以没有SwipeRefreshLayout），必要*/
     protected String mIdOfSwipeRefreshLayout = "refresh_layout";
     /**布局文件中LoadMoreRecyclerView的ID，必要*/
     protected String mIdOfRecyclerView = "recycler_list";
@@ -113,6 +121,8 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
      * 2、刷新数据SwipeRefreshLayout.OnRefreshListener -> doRefreshOnRecyclerView：下拉刷新
      * 3、加载更多LoadMoreRecyclerView.LoadMoreListener：上拉加载（初始加载的首批数据不足一屏时，自动触发）*/
     protected Bundle mDataBundle = new Bundle();
+    /**是否加载初始数据*/
+    protected boolean mAutoload = true;
     ////////////////异步数据 END////////////////
 
 
@@ -294,7 +304,11 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
 
         initView(view, getArguments());
         //自动加载初始数据
-        mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle, _this.getActivity());     //发起数据异步请求
+        if(mAutoload) {
+            mAsynDataRequest.fetchData(mPage, 1, mHandler, mDataBundle, _this.getActivity());     //发起数据异步请求
+        } else {
+            mRecyclerView.setAutoLoadMoreEnable(false);
+        }
         mRecyclerView.setAdapter(myRecyclerViewItemAdapter);
         mRecyclerView.setLoadMoreListener(new LoadMoreRecyclerView.LoadMoreListener() {
             @Override
@@ -312,12 +326,16 @@ public abstract class LoadMoreFragment<TAdapter extends RecyclerViewItemAdapter>
         return view;
     }
 
-    /**刷新RecyclerView*/
+    /**
+     * 刷新RecyclerView，重新加载控件数据显示
+     * 如果修改了数据条件，需要先修改mDataBundle，参照doParamBundle()
+     */
     public void doRefreshOnRecyclerView() {
 //        if(mSwipeRefreshLayout != null)
 //        mSwipeRefreshLayout.setRefreshing(false);
 //        myRecyclerViewItemAdapter.clearData();
 //        mPage = 0;
+        mRecyclerView.setAutoLoadMoreEnable(true);
         mRecyclerView.scrollToPosition(0);
         mAsynDataRequest.fetchData(0, 2, mHandler, mDataBundle, _this.getActivity()); //发起数据异步请求
     }

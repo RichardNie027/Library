@@ -246,7 +246,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
                 parent.addView(mLinearLayout);
 
             ProgressBar progressBar = new ProgressBar(parent.getContext());
-            int mProgressBarSize = UiUtil.dp2px(parent.getContext(),25);
+            int mProgressBarSize = UiUtil.dp2px(parent.getContext(),20);
             LinearLayout.LayoutParams mLayoutParams2 = new LinearLayout.LayoutParams(mProgressBarSize, mProgressBarSize);
             progressBar.setLayoutParams(mLayoutParams2);
             mLinearLayout.addView(progressBar);
@@ -457,7 +457,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
         int itemCount = mAutoLoadAdapter.getInternalAdapter().getDataSize() - position;
         if (mIsFooterEnable) itemCount++;
         if (mAutoLoadAdapter.getHeaderEnable()) itemCount++;
-        getAdapter().notifyItemRangeChanged(position, itemCount);
-        //getAdapter().notifyDataSetChanged();
+        //getAdapter().notifyItemRangeChanged(position, itemCount);
+        getAdapter().notifyDataSetChanged();
     }
 }

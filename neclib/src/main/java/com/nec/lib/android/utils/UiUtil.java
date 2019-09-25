@@ -53,6 +53,8 @@ public class UiUtil {
     public static float sScreenDensity = 1;
     /**屏幕密度dpi（120 / 160 / 240）*/
     public static int sScreenDensityDpi = 160;
+    /** DisplayMetrics */
+    public static DisplayMetrics sDisplayMetrics;
 
     /**生成屏幕尺寸，全局静态*/
     public static void getAndroiodScreenProperty(Context context) {
@@ -66,6 +68,8 @@ public class UiUtil {
         // 屏幕宽度算法:屏幕宽度（像素）/屏幕密度
         sScreenWidthInDp = (int) (sScreenWidthInPx / sScreenDensity);   // 屏幕宽度(dp)
         sScreenHeightInDp = (int) (sScreenHeightInPx / sScreenDensity); // 屏幕高度(dp)
+        // DisplayMetrics
+        sDisplayMetrics = context.getApplicationContext().getResources().getDisplayMetrics();
 
 //        String printInfo = "sScreenWidthInPx:" + sScreenWidthInPx + ";\nsScreenHeightInPx:" + sScreenHeightInPx + ";\nsScreenDensity:" + sScreenDensity + ";\nsScreenWidthInDp:" + sScreenWidthInDp + ";\nsScreenHeightInDp:" + sScreenHeightInDp;
 //        System.out.println(printInfo);
