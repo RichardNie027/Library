@@ -12,7 +12,7 @@ public class PageContent<T> implements Serializable {
 
     public int page = 0;    //zero-base
     public int pageCount = 0;
-    public int recordPerPage = 24;
+    public int pageSize = 24;
     public int recordCount = 0;
     public boolean hasMore = false;
     public List<T> datas = new ArrayList<T>();
@@ -20,8 +20,8 @@ public class PageContent<T> implements Serializable {
     public PageContent() {
     }
 
-    public PageContent(int page, int recordPerPage) {
+    public PageContent(int page, int pageSize) {
         this.page = page;
-        this.recordPerPage = recordPerPage;
+        this.pageSize = pageSize;
     }
 }

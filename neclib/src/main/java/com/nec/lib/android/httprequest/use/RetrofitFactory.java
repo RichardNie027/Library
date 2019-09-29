@@ -43,6 +43,7 @@ public class RetrofitFactory {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient().newBuilder()
                 .readTimeout(ApiConfig.getDefaultTimeout(), TimeUnit.MILLISECONDS)
                 .connectTimeout(ApiConfig.getDefaultTimeout(), TimeUnit.MILLISECONDS)
+                .retryOnConnectionFailure(true)    //try to fix EOFException
                 .addInterceptor(HttpLoggerInterceptor.getLoggerInterceptor())
                 .addInterceptor(new HttpHeaderInterceptor())
                 .addNetworkInterceptor(new HttpCacheInterceptor())
