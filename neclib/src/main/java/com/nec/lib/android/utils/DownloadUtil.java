@@ -1,6 +1,5 @@
 package com.nec.lib.android.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -14,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nec.lib.android.application.MyApplication;
-import com.nec.lib.android.boost.CommonProgressDialog;
+import com.nec.lib.android.boost.ProgressDialog;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,7 +32,7 @@ public class DownloadUtil {
     private String mLocalFilename;      // 客户端下载的文件名
     private String mDownloadUrl;        //下载地址
 
-    private CommonProgressDialog pBar;
+    private ProgressDialog pBar;
     private boolean mDownloadingVisible;
 
     private DownloadListener mDownloadListener;
@@ -82,7 +81,7 @@ public class DownloadUtil {
             downloadTask.execute(mDownloadUrl);
             return;
         }
-        pBar = new CommonProgressDialog(MyApplication.getCurrentActivity());
+        pBar = new ProgressDialog(MyApplication.getCurrentActivity());
         pBar.setCanceledOnTouchOutside(false);
         pBar.setTitle("正在下载");
         //动态构造对话框Layout
@@ -102,7 +101,7 @@ public class DownloadUtil {
         pBar.setCustomTitle(mLinearLayout);
         pBar.setMessage("正在下载");
         pBar.setIndeterminate(true);
-        pBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        pBar.setProgressStyle(android.app.ProgressDialog.STYLE_HORIZONTAL);
         pBar.setCancelable(true);
         // downFile(URLData.DOWNLOAD_URL);
         final DownloadTask downloadTask = new DownloadTask(MyApplication.getCurrentActivity());

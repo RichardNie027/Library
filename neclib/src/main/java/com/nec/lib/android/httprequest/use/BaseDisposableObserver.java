@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import com.google.gson.JsonParseException;
 import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.httprequest.utils.AppContextUtil;
 import com.nec.lib.android.httprequest.utils.VariableUtil;
@@ -23,7 +23,7 @@ import java.text.ParseException;
  * Observable 通过subscribeWith接收并返回Disposable对象，经过CompositeDisposable管理Disposable对象，参考{@link BaseDisposableSubscriber}
  */
 
-public abstract class BaseDisposableObserver<T extends BaseResponseEntity> extends DisposableObserver<T> {
+public abstract class BaseDisposableObserver<T extends BaseResponseVo> extends DisposableObserver<T> {
 
     /**
      * dialog 显示文字

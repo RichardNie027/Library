@@ -3,9 +3,13 @@ package com.nec.lib.android.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.net.Uri;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +156,21 @@ public class AndroidUtil {
                 .setCancelable(false)
                 .setPositiveButton("确定", null)
                 .show();
+    }
+
+    public static void copyText(String text) {
+        ClipboardManager cm = (ClipboardManager) MyApplication.getCurrentActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newPlainText("text", text));
+    }
+
+    public static void copyUrl(String url) {
+        ClipboardManager cm = (ClipboardManager) MyApplication.getCurrentActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newRawUri("url", Uri.parse(url)));
+    }
+
+    public static void copyIntent(Intent intent) {
+        ClipboardManager cm = (ClipboardManager) MyApplication.getCurrentActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        cm.setPrimaryClip(ClipData.newIntent("intent", intent));
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////

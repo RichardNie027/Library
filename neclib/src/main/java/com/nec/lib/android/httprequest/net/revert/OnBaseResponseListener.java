@@ -3,7 +3,7 @@ package com.nec.lib.android.httprequest.net.revert;
 /**
  * 网络返回参数回调
  */
-public interface OnBaseResponseListener<R extends BaseResponseEntity> {
+public interface OnBaseResponseListener<R extends BaseResponseVo> {
 
   /**
    * 成功

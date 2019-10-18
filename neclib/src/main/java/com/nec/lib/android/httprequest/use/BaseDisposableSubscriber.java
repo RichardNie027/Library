@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.widget.Toast;
 import com.google.gson.JsonParseException;
 import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.httprequest.utils.AppContextUtil;
 import com.nec.lib.android.httprequest.utils.VariableUtil;
@@ -34,7 +34,7 @@ import java.text.ParseException;
  *  mCompositeDisposable.add(disposable)
  */
 
-public abstract class BaseDisposableSubscriber<T extends BaseResponseEntity> extends ResourceSubscriber<T> {
+public abstract class BaseDisposableSubscriber<T extends BaseResponseVo> extends ResourceSubscriber<T> {
 
     /**
      * dialog 显示文字

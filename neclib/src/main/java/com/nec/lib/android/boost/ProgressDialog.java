@@ -15,7 +15,11 @@ import android.widget.TextView;
 
 import com.nec.lib.android.R;
 
-public class CommonProgressDialog extends AlertDialog {
+/**
+ * 带进度条的对话框
+ * 如制作下载对话框
+ */
+public class ProgressDialog extends AlertDialog {
     private ProgressBar mProgress;
     private TextView mProgressNumber;
     private TextView mProgressPercent;
@@ -25,11 +29,11 @@ public class CommonProgressDialog extends AlertDialog {
     private CharSequence mMessage;
     private boolean mHasStarted;
     private int mProgressVal;
-    private String TAG = "CommonProgressDialog";
+    private String TAG = "ProgressDialog";
     private String mProgressNumberFormat;
     private NumberFormat mProgressPercentFormat;
 
-    public CommonProgressDialog(Context context) {
+    public ProgressDialog(Context context) {
         super(context);
         initFormats();
     }
@@ -37,7 +41,7 @@ public class CommonProgressDialog extends AlertDialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.common_progress_dialog);
+        setContentView(R.layout.progress_dialog);
         mProgress = (ProgressBar) findViewById(R.id.progress);
         mProgressNumber = (TextView) findViewById(R.id.progress_number);
         mProgressPercent = (TextView) findViewById(R.id.progress_percent);

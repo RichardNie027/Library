@@ -13,6 +13,10 @@ import android.view.WindowManager;
 
 import com.nec.lib.android.utils.ResUtil;
 
+/**
+ * 自定义样式的对话框
+ * 指定控件的点击事件可感知
+ */
 public class CustomDialog extends Dialog implements View.OnClickListener {
 
     //在构造方法里提前加载了样式

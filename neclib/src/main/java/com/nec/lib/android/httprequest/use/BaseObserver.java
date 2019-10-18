@@ -7,7 +7,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.gson.JsonParseException;
 import com.nec.lib.android.httprequest.net.dialog.CustomProgressDialogUtils;
-import com.nec.lib.android.httprequest.net.revert.BaseResponseEntity;
+import com.nec.lib.android.httprequest.net.revert.BaseResponseVo;
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.httprequest.utils.AppContextUtil;
 import com.nec.lib.android.httprequest.utils.VariableUtil;
@@ -24,7 +24,7 @@ import java.text.ParseException;
 /**
  * 网络状态的封装类，子类初始化该类后，必须重写onSuccess(response)方法，可以选择性的重写onFailing(response)
  */
-public abstract class BaseObserver<T extends BaseResponseEntity> implements Observer<T> {
+public abstract class BaseObserver<T extends BaseResponseVo> implements Observer<T> {
 
 
     /**

@@ -15,20 +15,22 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.nec.lib.android.R;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 
-public abstract class BottomDialogFragment<T> extends DialogFragment {
+/**
+ * 底部弹出的对话框
+ * @param <K,VALUE>
+ */
+public abstract class BottomDialogFragment<K, V> extends DialogFragment {
     protected View mRootView;
-    protected List<T> mDatas = new ArrayList<>();
+    protected LinkedHashMap<K, V> mDatas = new LinkedHashMap<>();
 
-    public void setDataList(List datas) {
+    public void setDataList(LinkedHashMap<K, V> datas) {
         this.mDatas.clear();
-        this.mDatas.addAll(datas);
+        this.mDatas.putAll(datas);
     }
 
     @Nullable
