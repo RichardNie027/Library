@@ -86,6 +86,8 @@ public class StickHeaderDecoration extends RecyclerView.ItemDecoration {
         if (parent.getAdapter() instanceof StickHeaderRecyclerViewAdapter) {
             StickHeaderRecyclerViewAdapter adapter = (StickHeaderRecyclerViewAdapter) parent.getAdapter();
             int position = ((LinearLayoutManager) (parent.getLayoutManager())).findFirstVisibleItemPosition();
+            if(position<0)
+                return;
             View view = parent.findViewHolderForAdapterPosition(position).itemView;
             boolean isHeader = adapter.isItemHeader(position + 1);
             int top = parent.getPaddingTop();
