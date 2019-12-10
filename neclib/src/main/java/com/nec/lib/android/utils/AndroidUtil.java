@@ -3,10 +3,10 @@ package com.nec.lib.android.utils;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
@@ -15,12 +15,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 
 import com.nec.lib.android.application.MyApplication;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -124,6 +128,32 @@ public class AndroidUtil {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 }
             });
+        }
+    }
+
+    public static void hideKeyboard(Activity activity, final EditText editText, boolean hide) {
+        if (android.os.Build.VERSION.SDK_INT <= 10) {
+            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Service.INPUT_METHOD_SERVICE);
+            if(hide)
+                inputManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+            else
+                inputManager.showSoftInput(editText,0);
+        } else {
+            Class<EditText> cls = EditText.class;
+            Method method;
+            try {
+                method = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+                method.setAccessible(true);
+                method.invoke(editText, !hide);
+            } catch (Exception e) {
+            }
+
+            try {
+                method = cls.getMethod("setSoftInputShownOnFocus", boolean.class);
+                method.setAccessible(true);
+                method.invoke(editText, !hide);
+            } catch (Exception e) {
+            }
         }
     }
 

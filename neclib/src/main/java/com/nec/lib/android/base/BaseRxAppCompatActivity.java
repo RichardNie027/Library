@@ -10,7 +10,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 
 import com.nec.lib.android.httprequest.utils.ApiConfig;
 import com.nec.lib.android.application.MyApplication;
@@ -19,6 +21,7 @@ import com.nec.lib.android.utils.AndroidUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 
 import io.reactivex.disposables.CompositeDisposable;
 
@@ -90,8 +93,26 @@ public abstract class BaseRxAppCompatActivity extends RxAppCompatActivity {
      *   设置输入法隐藏
      */
     public void hideKeyboard(boolean hide) {
-        String[] specialSystemModels = {"95S Series"};
-        if(Arrays.binarySearch(specialSystemModels, AndroidUtil.SystemInfo.getSystemModel()) < 0)
+        String[] specialSystemModels1 = {"95S Series"};
+        String[] specialSystemModels2 = {"IWRIST i7"};
+        if(Arrays.binarySearch(specialSystemModels1, AndroidUtil.SystemInfo.getSystemModel()) >= 0)
+            ;
+        else if(Arrays.binarySearch(specialSystemModels2, AndroidUtil.SystemInfo.getSystemModel()) >= 0) {
+            ViewGroup viewGroup = (ViewGroup)_this.findViewById(android.R.id.content);
+            LinkedList<ViewGroup> linkedList = new LinkedList<>();
+            linkedList.add(viewGroup);
+            while(!linkedList.isEmpty()) {
+                ViewGroup current = linkedList.removeFirst();
+                for(int i = 0; i < current.getChildCount(); i ++) {
+                    if(current.getChildAt(i) instanceof ViewGroup) {
+                        linkedList.addLast((ViewGroup) current.getChildAt(i));
+                    }else if(current.getChildAt(i) instanceof EditText) {
+                        AndroidUtil.hideKeyboard(_this, (EditText)current.getChildAt(i), hide);
+                    }
+                }
+            }
+
+        } else
             AndroidUtil.hideKeyboard(_this, hide);
     }
 
